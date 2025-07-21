@@ -1,1 +1,3 @@
 # delta_bot
+
+Discord security bot still under development. If someone's reading this, please help me set up the panel cause WAY too lost...
