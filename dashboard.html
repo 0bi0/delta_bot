@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Delta Security Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#1e2a45] text-white font-sans min-h-screen">
+  <!-- Header Banner -->
+  <header class="bg-[#1e2a45] shadow-lg py-6 flex items-center justify-center">
+    <img src="delta_bot_banner_V1.jpg" alt="Delta Security Banner" class="h-28 object-contain" />
+  </header>
+
+  <!-- Main Dashboard Section -->
+  <main class="max-w-4xl mx-auto mt-10 px-6">
+    <h1 class="text-3xl font-bold mb-6 text-center">Feature Toggle Panel</h1>
+    
+    <div class="grid md:grid-cols-2 gap-6">
+      <!-- Example Toggle Card -->
+      <div class="bg-[#2d3c5a] rounded-2xl shadow-lg p-5 flex items-center justify-between">
+        <div>
+          <h2 class="text-xl font-semibold">Anti-Nuke</h2>
+          <p class="text-sm text-gray-300">Blocks mass channel/role deletions</p>
+        </div>
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" class="sr-only peer" id="antiNukeToggle">
+          <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:bg-yellow-400 transition-all duration-300"></div>
+        </label>
+      </div>
+
+      <!-- Repeat the card for more features -->
+      <div class="bg-[#2d3c5a] rounded-2xl shadow-lg p-5 flex items-center justify-between">
+        <div>
+          <h2 class="text-xl font-semibold">Anti-Raid</h2>
+          <p class="text-sm text-gray-300">Automatically quarantines suspected raid members</p>
+        </div>
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" class="sr-only peer" id="antiRaidToggle">
+          <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:bg-yellow-400 transition-all duration-300"></div>
+        </label>
+      </div>
+      
+            <!-- Repeat the card for more features -->
+      <div class="bg-[#2d3c5a] rounded-2xl shadow-lg p-5 flex items-center justify-between">
+        <div>
+          <h2 class="text-xl font-semibold">Filter System</h2>
+          <p class="text-sm text-gray-300">Blocks slurs and filtered keywords from chat</p>
+        </div>
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" class="sr-only peer" id="filterSystemToggle">
+          <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:bg-yellow-400 transition-all duration-300"></div>
+        </label>
+      </div>
+      
+                  <!-- Repeat the card for more features -->
+      <div class="bg-[#2d3c5a] rounded-2xl shadow-lg p-5 flex items-center justify-between">
+        <div>
+          <h2 class="text-xl font-semibold">Role Protection</h2>
+          <p class="text-sm text-gray-300">Prevents dangerous permissions from being added to roles</p>
+        </div>
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" class="sr-only peer" id="roleProtectionToggle">
+          <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:bg-yellow-400 transition-all duration-300"></div>
+        </label>
+      </div>
+      
+                        <!-- Repeat the card for more features -->
+      <div class="bg-[#2d3c5a] rounded-2xl shadow-lg p-5 flex items-center justify-between">
+        <div>
+          <h2 class="text-xl font-semibold">Permission Preventer</h2>
+          <p class="text-sm text-gray-300">Prevents high-level permissions from being granted to memb</p>
+        </div>
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" class="sr-only peer" id="permissionPreventerToggle">
+          <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:bg-yellow-400 transition-all duration-300"></div>
+        </label>
+      </div>
+      
+                              <!-- Repeat the card for more features -->
+      <div class="bg-[#2d3c5a] rounded-2xl shadow-lg p-5 flex items-center justify-between">
+        <div>
+          <h2 class="text-xl font-semibold">Webhook Deleter</h2>
+          <p class="text-sm text-gray-300">Automatically deletes unauthorized webhooks</p>
+        </div>
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" class="sr-only peer" id="webhookDeleterToggle">
+          <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:bg-yellow-400 transition-all duration-300"></div>
+        </label>
+      </div>
+      
+                                    <!-- Repeat the card for more features -->
+      <div class="bg-[#2d3c5a] rounded-2xl shadow-lg p-5 flex items-center justify-between">
+        <div>
+          <h2 class="text-xl font-semibold">Revenge on Bot Remover</h2>
+          <p class="text-sm text-gray-300">Punishes anyone who removes the bot from a server</p>
+        </div>
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" class="sr-only peer" id="revengeOnBotRemoverToggle">
+          <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:bg-yellow-400 transition-all duration-300"></div>
+        </label>
+      </div>
+
+
+      <!-- Add more toggles here similarly -->
+    </div>
+
+    <!-- Footer with Logo -->
+    <footer class="mt-16 text-center">
+      <img src="logo.png" alt="Delta Logo" class="mx-auto h-20" />
+      <p class="mt-4 text-sm text-gray-400">© 2025 Delta Security</p>
+    </footer>
+  </main>
+</body>
+</html>
