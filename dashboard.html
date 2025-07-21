@@ -24,7 +24,7 @@
           <p class="text-sm text-gray-300">Blocks mass channel/role deletions</p>
         </div>
         <label class="inline-flex items-center cursor-pointer">
-          <input type="checkbox" class="sr-only peer" id="antiNukeToggle">
+          <input type="checkbox" class="sr-only peer" id="anti_nuke">
           <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:bg-yellow-400 transition-all duration-300"></div>
         </label>
       </div>
@@ -36,7 +36,7 @@
           <p class="text-sm text-gray-300">Automatically quarantines suspected raid members</p>
         </div>
         <label class="inline-flex items-center cursor-pointer">
-          <input type="checkbox" class="sr-only peer" id="antiRaidToggle">
+          <input type="checkbox" class="sr-only peer" id="anti_raid">
           <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:bg-yellow-400 transition-all duration-300"></div>
         </label>
       </div>
@@ -48,7 +48,7 @@
           <p class="text-sm text-gray-300">Blocks slurs and filtered keywords from chat</p>
         </div>
         <label class="inline-flex items-center cursor-pointer">
-          <input type="checkbox" class="sr-only peer" id="filterSystemToggle">
+          <input type="checkbox" class="sr-only peer" id="filter_system">
           <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:bg-yellow-400 transition-all duration-300"></div>
         </label>
       </div>
@@ -60,7 +60,7 @@
           <p class="text-sm text-gray-300">Prevents dangerous permissions from being added to roles</p>
         </div>
         <label class="inline-flex items-center cursor-pointer">
-          <input type="checkbox" class="sr-only peer" id="roleProtectionToggle">
+          <input type="checkbox" class="sr-only peer" id="role_protection">
           <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:bg-yellow-400 transition-all duration-300"></div>
         </label>
       </div>
@@ -72,7 +72,7 @@
           <p class="text-sm text-gray-300">Prevents high-level permissions from being granted to memb</p>
         </div>
         <label class="inline-flex items-center cursor-pointer">
-          <input type="checkbox" class="sr-only peer" id="permissionPreventerToggle">
+          <input type="checkbox" class="sr-only peer" id="dangerous_permission_preventer">
           <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:bg-yellow-400 transition-all duration-300"></div>
         </label>
       </div>
@@ -84,7 +84,7 @@
           <p class="text-sm text-gray-300">Automatically deletes unauthorized webhooks</p>
         </div>
         <label class="inline-flex items-center cursor-pointer">
-          <input type="checkbox" class="sr-only peer" id="webhookDeleterToggle">
+          <input type="checkbox" class="sr-only peer" id="webhook_deleter">
           <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:bg-yellow-400 transition-all duration-300"></div>
         </label>
       </div>
@@ -96,7 +96,7 @@
           <p class="text-sm text-gray-300">Punishes anyone who removes the bot from a server</p>
         </div>
         <label class="inline-flex items-center cursor-pointer">
-          <input type="checkbox" class="sr-only peer" id="revengeOnBotRemoverToggle">
+          <input type="checkbox" class="sr-only peer" id="revenge_on_bot_remover">
           <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:bg-yellow-400 transition-all duration-300"></div>
         </label>
       </div>
@@ -111,5 +111,56 @@
       <p class="mt-4 text-sm text-gray-400">© 2025 Delta Security</p>
     </footer>
   </main>
+
+<script>
+document.querySelectorAll("input[type=checkbox]").forEach(toggle => {
+  toggle.addEventListener("change", () => {
+    fetch("/toggle", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        feature: toggle.id.replace("Toggle", "").toLowerCase(),
+        value: toggle.checked
+      })
+    });
+  });
+});
+
+const toggles = document.querySelectorAll('input[type="checkbox"]');
+  const saveBtn = document.getElementById('saveButton');
+  let settings = {};
+
+  // Load initial states
+  toggles.forEach(toggle => {
+    const id = toggle.id.replace('Toggle', '');
+    settings[id] = toggle.checked;
+    toggle.addEventListener('change', () => {
+      settings[id] = toggle.checked;
+    });
+  });
+
+  saveBtn.addEventListener('click', () => {
+    fetch('/save', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(settings)
+    })
+    .then(res => res.json())
+    .then(data => {
+      alert("✅ Settings saved!");
+    })
+    .catch(err => {
+      alert("❌ Failed to save settings.");
+    });
+  });
+
+<div class="text-center mt-10">
+  <button id="saveButton" class="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 px-6 rounded-full shadow-lg transition">
+    Save Changes
+  </button>
+</div>
+
+</script>
+
 </body>
 </html>
