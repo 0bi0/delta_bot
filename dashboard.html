@@ -126,39 +126,39 @@ document.querySelectorAll("input[type=checkbox]").forEach(toggle => {
   });
 });
 
-const toggles = document.querySelectorAll('input[type="checkbox"]');
-  const saveBtn = document.getElementById('saveButton');
-  let settings = {};
+  const toggles = document.querySelectorAll('input[type="checkbox"]');
+    const saveBtn = document.getElementById('saveButton');
+    let settings = {};
 
-  // Load initial states
-  toggles.forEach(toggle => {
-    const id = toggle.id.replace('Toggle', '');
-    settings[id] = toggle.checked;
-    toggle.addEventListener('change', () => {
+    // Load initial states
+    toggles.forEach(toggle => {
+      const id = toggle.id.replace('Toggle', '');
       settings[id] = toggle.checked;
-    });
+      toggle.addEventListener('change', () => {
+        settings[id] = toggle.checked;
+      });
   });
 
-  saveBtn.addEventListener('click', () => {
-    fetch('/save', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(settings)
-    })
-    .then(res => res.json())
-    .then(data => {
-      alert("✅ Settings saved!");
-    })
-    .catch(err => {
-      alert("❌ Failed to save settings.");
+    saveBtn.addEventListener('click', () => {
+      fetch('/save', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(settings)
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert("✅ Settings saved!");
+      })
+      .catch(err => {
+        alert("❌ Failed to save settings.");
+      });
     });
-  });
 
-<div class="text-center mt-10">
-  <button id="saveButton" class="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 px-6 rounded-full shadow-lg transition">
-    Save Changes
-  </button>
-</div>
+  <div class="text-center mt-10">
+    <button id="saveButton" class="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 px-6 rounded-full shadow-lg transition">
+      Save Changes
+    </button>
+  </div>
 
 </script>
 
