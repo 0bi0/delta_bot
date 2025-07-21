@@ -1,9 +1,9 @@
 {
-    "revenge_on_bot_remover": true,
-    "filter_system": true,
-    "webhook_deleter": true,
-    "role_protection": true,
-    "dangerous_permission_preventer": true,
-    "anti_nuke": true,
-    "anti_raid": true
+    "revengeOnBotRemoverToggle": true,
+    "filterSystemToggle": true,
+    "webhookDeleterToggle": true,
+    "roleProtectionToggle": true,
+    "permissionPreventerToggle": true,
+    "antiNukeToggle": true,
+    "antiRaidToggle": true
 }
