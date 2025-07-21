@@ -117,7 +117,7 @@
 
     <!-- Save Script -->
 <script>
-  const loadedSettings = { settings , tojson };
+  const loadedSettings = {{ settings | tojson }};
 
   window.onload = () => {
     for (const [id, value] of Object.entries(loadedSettings)) {
