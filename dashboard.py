@@ -1,27 +1,46 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, jsonify
 import json
+import os
 
 app = Flask(__name__)
 
-SETTINGS_FILE = "settings.json"
+SETTINGS_PATH = 'settings.json'
 
+# Load settings from file
 def load_settings():
-    with open(SETTINGS_FILE, "r") as f:
+    if not os.path.exists(SETTINGS_PATH):
+        return {
+            "anti_nuke": True,
+            "anti_raid": True,
+            "filter_system": True,
+            "role_protection": True,
+            "dangerous_permission_preventer": True,
+            "webhook_deleter": True,
+            "revenge_on_bot_remover": True
+        }
+    with open(SETTINGS_PATH, 'r') as f:
         return json.load(f)
 
+# Save settings to file
 def save_settings(settings):
-    with open(SETTINGS_FILE, "w") as f:
-        json.dump(settings, f, indent=4)
+    with open(SETTINGS_PATH, 'w') as f:
+        json.dump(settings, f, indent=2)
 
-@app.route("/", methods=["GET", "POST"])
-def dashboard():
+@app.route('/')
+def index():
     settings = load_settings()
-    if request.method == "POST":
-        for key in settings:
-            settings[key] = request.form.get(key) == "on"
-        save_settings(settings)
-        return redirect(url_for("dashboard"))
-    return render_template("dashboard.html", settings=settings)
+    return render_template('dashboard.html', settings=settings)
 
-if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+@app.route('/save', methods=['POST'])
+def save():
+    data = request.get_json()
+    save_settings(data)
+    return jsonify({"status": "success"})
+
+@app.route('/toggle', methods=['POST'])
+def toggle():
+    data = request.get_json()
+    settings = load_settings()
+    settings[data['feature']] = data['value']
+    save_settings(settings)
+    return jsonify({"status": "toggled"})
