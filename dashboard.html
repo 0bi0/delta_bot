@@ -116,37 +116,47 @@
     </footer>
 
     <!-- Save Script -->
-    <script>
+<script>
+  const loadedSettings = { settings , tojson };
+
+  window.onload = () => {
+    for (const [id, value] of Object.entries(loadedSettings)) {
+      const checkbox = document.getElementById(id);
+      if (checkbox) {
+        checkbox.checked = value;
+      }
+    }
+
+    document.getElementById("saveButton").addEventListener("click", () => {
+      const toggles = Array.from(document.querySelectorAll("input[type='checkbox']"));
+      const newSettings = {};
+      toggles.forEach(toggle => {
+        newSettings[toggle.id] = toggle.checked;
+      });
+
       fetch("/save", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(settings)
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newSettings)
       })
-
-      document.getElementById("saveButton").addEventListener("click", () => {
-        const toggles = Array.from(document.querySelectorAll("input[type='checkbox']"));
-        const settings = {};
-        toggles.forEach(toggle => {
-          settings[toggle.id] = toggle.checked;
-        });
-
-        fetch("/save", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(settings)
-        })
         .then(response => response.json())
         .then(data => {
-          alert("Settings saved successfully!");
+          if (data.success) {
+            alert("✅ Settings saved!");
+          } else {
+            alert("❌ Error saving settings.");
+          }
         })
         .catch(error => {
-          alert("An error occurred while saving.");
+          alert("❌ Save failed.");
           console.error(error);
         });
-      });
-    </script>
+    });
+  };
+</script>
+
   </main>
 </body>
 </html>
