@@ -116,9 +116,9 @@
     </footer>
 
     <!-- Save Script -->
-<script>
-  const loadedSettings = {{ settings | tojson }};
-
+<script type="text/javascript">
+  const loadedSettings = {{ settings | tojson | safe }};
+  
   window.onload = () => {
     for (const [id, value] of Object.entries(loadedSettings)) {
       const checkbox = document.getElementById(id);
@@ -156,6 +156,7 @@
     });
   };
 </script>
+
 
   </main>
 </body>
