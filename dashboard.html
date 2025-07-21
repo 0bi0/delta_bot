@@ -117,6 +117,12 @@
 
     <!-- Save Script -->
     <script>
+      fetch("/save", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(settings)
+      })
+
       document.getElementById("saveButton").addEventListener("click", () => {
         const toggles = Array.from(document.querySelectorAll("input[type='checkbox']"));
         const settings = {};
