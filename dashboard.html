@@ -1,69 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bot Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
-    <style>
-      body {
-        font-family: 'Inter', sans-serif;
-        background: linear-gradient(to bottom, #0f172a, #1e293b);
-        color: #fff;
-      }
-      .glass {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-      }
-    </style>
-  </head>
-  <body class="min-h-screen flex items-center justify-center p-6">
-    <div class="w-full max-w-5xl">
-      <header class="mb-10 text-center">
-        <img src="/static/banner.jpg" alt="Banner" class="w-full rounded-xl shadow-xl mb-6" />
-        <h1 class="text-4xl font-extrabold text-yellow-400 drop-shadow-md">Discord Bot Dashboard</h1>
-        <p class="text-gray-300 mt-2">Manage all modules of your bot in one place.</p>
-      </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Delta Security Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#1e2a45] text-white font-sans min-h-screen">
 
-      <div class="grid md:grid-cols-2 gap-6">
-        <!-- Feature Cards -->
-        {% for key, label, desc in [
-          ('webhook_deleter', 'Webhook Deleter', 'Automatically deletes unauthorized webhooks'),
-          ('filter_system', 'Filter System', 'Blocks inappropriate or blacklisted words'),
-          ('anti_nuke', 'Anti-Nuke', 'Protects server from destructive bot attacks'),
-          ('anti_raid', 'Anti-Raid', 'Detects and blocks mass-join attempts'),
-          ('role_protection', 'Role Protection', 'Prevents sensitive role changes'),
-          ('dangerous_permission_preventer', 'Permission Monitor', 'Stops dangerous permissions being granted'),
-          ('revenge_on_bot_remover', 'Bot Remover Revenge', 'Punishes those who remove the bot')
-        ] %}
-        <div class="bg-[#2d3c5a] rounded-2xl shadow-lg p-5 flex items-center justify-between">
-          <div>
-            <h2 class="text-xl font-semibold">{{ label }}</h2>
-            <p class="text-sm text-gray-300">{{ desc }}</p>
-          </div>
-          <label class="inline-flex items-center cursor-pointer">
-            <input type="checkbox" class="sr-only peer" id="{{ key }}" {% if settings[key] %}checked{% endif %}>
-            <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:bg-yellow-400 transition-all duration-300"></div>
-          </label>
+  <!-- Header Banner -->
+  <header class="bg-[#1e2a45] shadow-lg py-6 flex items-center justify-center">
+    <img src="delta_bot_banner_V1.jpg" alt="Delta Security Banner" class="h-28 object-contain" />
+  </header>
+
+  <!-- Main Dashboard Section -->
+  <main class="max-w-5xl mx-auto mt-10 px-6">
+    <h1 class="text-4xl font-bold mb-10 text-center text-yellow-400 drop-shadow-md">Feature Toggle Panel</h1>
+    
+    <div class="grid md:grid-cols-2 gap-8">
+      <!-- Cards -->
+      <!-- For brevity, only one card is shown here as example. Include the rest as-is from your original code. -->
+      
+      <div class="bg-[#2d3c5a] rounded-2xl shadow-xl p-6 flex items-center justify-between hover:scale-[1.01] transition">
+        <div>
+          <h2 class="text-xl font-semibold text-yellow-300">Anti-Nuke</h2>
+          <p class="text-sm text-gray-300">Blocks mass channel/role deletions</p>
         </div>
-        {% endfor %}
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" class="sr-only peer" id="antiNukeToggle">
+          <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-yellow-500 rounded-full peer peer-checked:bg-yellow-400 transition-all duration-300"></div>
+        </label>
       </div>
 
-      <!-- Save Button -->
-      <div class="text-center mt-10">
-        <button id="saveButton" class="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 px-6 rounded-full shadow-lg transition">
-          Save Changes
-        </button>
+      <!-- [Insert the rest of your cards here unchanged!] -->
+      
+            <div class="bg-[#2d3c5a] rounded-2xl shadow-xl p-6 flex items-center justify-between hover:scale-[1.01] transition">
+        <div>
+          <h2 class="text-xl font-semibold text-yellow-300">Anti-Raid</h2>
+          <p class="text-sm text-gray-300">Automatically quarantines suspected raid members</p>
+        </div>
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" class="sr-only peer" id="antiRaidToggle">
+          <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-yellow-500 rounded-full peer peer-checked:bg-yellow-400 transition-all duration-300"></div>
+        </label>
+      </div>
+      
+                  <div class="bg-[#2d3c5a] rounded-2xl shadow-xl p-6 flex items-center justify-between hover:scale-[1.01] transition">
+        <div>
+          <h2 class="text-xl font-semibold text-yellow-300">Filter System</h2>
+          <p class="text-sm text-gray-300">Blocks slurs and filtered keywords from chat</p>
+        </div>
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" class="sr-only peer" id="filterSystemToggle">
+          <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-yellow-500 rounded-full peer peer-checked:bg-yellow-400 transition-all duration-300"></div>
+        </label>
+      </div>
+      
+                        <div class="bg-[#2d3c5a] rounded-2xl shadow-xl p-6 flex items-center justify-between hover:scale-[1.01] transition">
+        <div>
+          <h2 class="text-xl font-semibold text-yellow-300">Webhook Deleter</h2>
+          <p class="text-sm text-gray-300">Automatically deletes unauthorized webhooks</p>
+        </div>
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" class="sr-only peer" id="webhookDeleterToggle">
+          <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-yellow-500 rounded-full peer peer-checked:bg-yellow-400 transition-all duration-300"></div>
+        </label>
+      </div>
+      
+                              <div class="bg-[#2d3c5a] rounded-2xl shadow-xl p-6 flex items-center justify-between hover:scale-[1.01] transition">
+        <div>
+          <h2 class="text-xl font-semibold text-yellow-300">Role Protection</h2>
+          <p class="text-sm text-gray-300">Prevents dangerous permissions from being added to roles</p>
+        </div>
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" class="sr-only peer" id="roleProtectionToggle">
+          <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-yellow-500 rounded-full peer peer-checked:bg-yellow-400 transition-all duration-300"></div>
+        </label>
+      </div>
+      
+                                    <div class="bg-[#2d3c5a] rounded-2xl shadow-xl p-6 flex items-center justify-between hover:scale-[1.01] transition">
+        <div>
+          <h2 class="text-xl font-semibold text-yellow-300">Permission Preventer</h2>
+          <p class="text-sm text-gray-300">Prevents high-level permissions from being granted to members</p>
+        </div>
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" class="sr-only peer" id="permissionPreventerToggle">
+          <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-yellow-500 rounded-full peer peer-checked:bg-yellow-400 transition-all duration-300"></div>
+        </label>
+      </div>
+      
+                                          <div class="bg-[#2d3c5a] rounded-2xl shadow-xl p-6 flex items-center justify-between hover:scale-[1.01] transition">
+        <div>
+          <h2 class="text-xl font-semibold text-yellow-300">Revenge on Bot Remover</h2>
+          <p class="text-sm text-gray-300">Punishes anyone who removes the bot from a server</p>
+        </div>
+        <label class="inline-flex items-center cursor-pointer">
+          <input type="checkbox" class="sr-only peer" id="permissionPreventerToggle">
+          <div class="w-11 h-6 bg-gray-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-yellow-500 rounded-full peer peer-checked:bg-yellow-400 transition-all duration-300"></div>
+        </label>
       </div>
 
-      <footer class="mt-12 text-center text-sm text-gray-500">
-        <p>© 2025 Powered by 0bi0 & GPT. All rights reserved.</p>
-        <img src="/static/footer.png" alt="Footer Art" class="mx-auto mt-4 w-48 opacity-40" />
-      </footer>
     </div>
 
+    <!-- Save Button -->
+    <div class="flex justify-center mt-12">
+      <button id="saveButton" class="bg-yellow-400 hover:bg-yellow-300 text-black font-semibold py-2 px-6 rounded-xl shadow-lg transition">
+        💾 Save Settings
+      </button>
+    </div>
+
+    <!-- Footer with Logo -->
+    <footer class="mt-20 text-center">
+      <img src="logo.png" alt="Delta Logo" class="mx-auto h-20 drop-shadow-lg" />
+      <p class="mt-4 text-sm text-gray-400">© 2025 Delta Security</p>
+    </footer>
+
+    <!-- Save Script -->
     <script>
       document.getElementById("saveButton").addEventListener("click", () => {
         const toggles = Array.from(document.querySelectorAll("input[type='checkbox']"));
@@ -89,5 +141,6 @@
         });
       });
     </script>
-  </body>
+  </main>
+</body>
 </html>
