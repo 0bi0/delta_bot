@@ -135,15 +135,15 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newSettings)
       })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) alert("✅ Settings saved!");
-        else alert("❌ Error saving settings.");
-      })
-      .catch(err => {
-        alert("❌ Save failed.");
-        console.error(err);
-      });
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) alert("✅ Settings saved!");
+          else alert("❌ Error saving settings.");
+        })
+        .catch(err => {
+          alert("❌ Save failed.");
+          console.error(err);
+        });
     });
   };
 </script>
