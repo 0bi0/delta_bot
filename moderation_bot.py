@@ -23,7 +23,7 @@ import json
 
 # Bot token
 
-token = "[REDATCED]"
+token = "[REDACTED]"
 
 
 # Load settings from JSON file (settings.json)
@@ -141,7 +141,7 @@ async def on_message(msg):
 @client.event
 async def on_webhooks_update(channel):
     settings = get_settings()
-    if settings.get("webhookDeleterToggle"):  # Check if toggle is enabled
+    if get_settings.get("webhookDeleterToggle"):  # Check if toggle is enabled
         try:
             webhooks = await channel.webhooks()
             for webhook in webhooks:
