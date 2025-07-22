@@ -117,14 +117,13 @@
 
     <!-- Save Script -->
 <script>
-  const settings = {{ settings | tojson }};
+  const loadedSettings = {{ settings | tojson | safe }};
 
   window.onload = () => {
-    // Initialize checkboxes
-    Object.entries(settings).forEach(([id, val]) => {
+    for (const [id, val] of Object.entries(loadedSettings)) {
       const cb = document.getElementById(id);
       if (cb) cb.checked = val;
-    });
+    }
 
     document.getElementById("saveButton").addEventListener("click", () => {
       const toggles = document.querySelectorAll("input[type='checkbox']");
