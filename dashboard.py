@@ -7,6 +7,7 @@ app = Flask(__name__)
 def index():
     with open("settings.json", "r") as f:
         settings = json.load(f)
+    print("[DEBUG] Sending to template:", settings)
     return render_template("dashboard.html", settings=settings)
 
 @app.route("/save", methods=["POST"])
