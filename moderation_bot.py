@@ -39,7 +39,7 @@ def save_settings(settings):
         json.dump(settings, f, indent=4)
 
 def get_settings():
-    with open("settings.json", "r") as f:
+    with open(SETTINGS_FILE, "r") as f:
         return json.load(f)
 
 settings = load_settings()
@@ -94,6 +94,7 @@ async def check_rate_limit(guild, user, action_type, threshold=3, seconds=5):
 
 # Bot actions and events (INDLUDES ALL COMMANDS AND EVENTS)
 
+#  1.  ᴏɴ ʀᴇᴀᴅʏ ᴇᴠᴇɴᴛ (ɪɴɪᴛɪᴀʟɪᴢᴇꜱ ʙᴏᴛ, ʙᴀsɪᴄ sᴇᴛᴜᴘ, ᴀɴᴅ ʀᴇvᴇnɢe ᴏɴ ʙᴏᴛ ʀᴇᴍoᴠᴀʟ)
 @client.event
 async def on_ready():
     await client.change_presence(activity=discord.Game(name="/help for commands"))
