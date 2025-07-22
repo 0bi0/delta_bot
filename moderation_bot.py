@@ -23,7 +23,7 @@ import json
 
 # Bot token
 
-token = "[REDACTED]"
+token = "[REDATCED]"
 
 
 # Load settings from JSON file (settings.json)
@@ -141,20 +141,19 @@ async def on_message(msg):
 @client.event
 async def on_webhooks_update(channel):
     settings = get_settings()
-    if settings.get("webhookDeleterToggle"):
-        return
-    guild = channel.guild
-    try:
-        webhooks = await channel.webhooks()
-        for webhook in webhooks:
-            await webhook.delete(reason="Webhook Deleter is enabled.")
-            print(f"[Webhook Deleter] Deleted webhook '{webhook.name}' in #{channel.name}")
-        if channel.permissions_for(guild.me).send_messages:
-            await channel.send("🚨 Unauthorized webhook(s) were deleted.")
-    except discord.Forbidden:
-        print(f"⚠️ Missing permissions to delete webhooks in #{channel.name}")
-    except Exception as e:
-        print(f"❌ Error deleting webhooks: {e}")
+    if settings.get("webhookDeleterToggle"):  # Check if toggle is enabled
+        try:
+            webhooks = await channel.webhooks()
+            for webhook in webhooks:
+                try:
+                    await webhook.delete()
+                    print(f"✅ Deleted webhook '{webhook.name}' in #{channel.name}")
+                except discord.Forbidden:
+                    print(f"❌ Permission error: Couldn't delete webhook '{webhook.name}' in #{channel.name}")
+                except Exception as e:
+                    print(f"⚠️ Unexpected error deleting webhook '{webhook.name}': {e}")
+        except Exception as e:
+            print(f"⚠️ Failed to fetch webhooks for #{channel.name}: {e}")
 
 
 #  4. ʀᴏʟᴇ ᴍᴀɴᴀɢᴇᴍᴇɴᴛ (ᴘʀᴏᴛᴇᴄᴛᴇᴅ ʀᴏʟᴇs)
