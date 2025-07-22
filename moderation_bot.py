@@ -94,13 +94,13 @@ async def check_rate_limit(guild, user, action_type, threshold=3, seconds=5):
 
 # Bot actions and events (INDLUDES ALL COMMANDS AND EVENTS)
 
-#  1. ʟᴏɢɪɴ ᴅᴏᴄᴜᴍᴇɴᴛᴀᴛɪᴏɴ ᴀɴᴅ ʀᴇᴠᴇɴɢᴇ ᴏɴ ʙᴏᴛ ʀᴇᴍᴏᴠᴇʀ
 @client.event
 async def on_ready():
     await client.change_presence(activity=discord.Game(name="/help for commands"))
     await client.tree.sync(guild=MY_GUILD)
     print(f"✅ Bot logged in as {client.user}")
-    if get_settings().get("revengeOnBotRemoverToggle"):
+    settings = get_settings()
+    if settings.get("revengeOnBotRemoverToggle"):
         for guild in client.guilds:
             async for entry in guild.audit_logs(limit=10, action=discord.AuditLogAction.kick):
                 if entry.target == client.user:
@@ -118,7 +118,8 @@ async def on_ready():
 async def on_message(msg):
     if msg.author == client.user:
         return
-    if get_settings().get("filterSystemToggle"):  # Check if filter system is enabled
+    settings = get_settings()
+    if settings.get("filterSystemToggle"):  # Check if filter system is enabled
         is_webhook = msg.webhook_id is not None
         is_user = not is_webhook and not any(role.name == "Founder" for role in msg.author.roles)
         if is_webhook or is_user:
@@ -134,26 +135,34 @@ async def on_message(msg):
     await client.process_commands(msg)
 
 
+
 #  3. ᴡᴇʙʜᴏᴏᴋ ᴅᴇʟᴇᴛɪᴏɴ ᴀɴᴅ ᴜᴘᴅᴀᴛᴇs
 @client.event
-async def on_webhooks_update(channel):
-    if get_settings().get("webhookDeleterToggle"):  # Check if webhook deleter is enabled
-        try:
-            webhooks = await channel.webhooks()
-            for webhook in webhooks:
-                try:
-                    await webhook.delete()
-                    print(f"Deleted webhook '{webhook.name}' in #{channel.name}")
-                except discord.Forbidden:
-                    print(f"❌ Permission error: Couldn't delete webhook '{webhook.name}' in #{channel.name}")
-                except Exception as e:
-                    print(f"⚠️ Unexpected error deleting webhook '{webhook.name}': {e}")
-        except Exception as e:
-            print(f"⚠️ Failed to fetch webhooks for #{channel.name}: {e}")
+async def on_message(msg):
+    if msg.author == client.user:
+        return
+    settings = get_settings()
+    if settings.get("filterSystemToggle"):  # Check if filter system is enabled
+        is_webhook = msg.webhook_id is not None
+        is_user = not is_webhook and not any(role.name == "Founder" for role in msg.author.roles)
+        if is_webhook or is_user:
+            content = msg.content.lower()
+            if any(bad_word in content for bad_word in block_words):
+                await msg.delete()
+                warning_msg = (
+                    f"{msg.author.mention}, your message was deleted because it contained inappropriate language."
+                    if not is_webhook else
+                    "🚫 A webhook message was deleted because it contained inappropriate language."
+                )
+                await msg.channel.send(warning_msg)
+
+    await client.process_commands(msg)
+
 
 #  4. ʀᴏʟᴇ ᴍᴀɴᴀɢᴇᴍᴇɴᴛ (ᴘʀᴏᴛᴇᴄᴛᴇᴅ ʀᴏʟᴇs)
 @client.event
 async def on_member_update(before, after):
+    settings = get_settings()
     if get_settings().get("roleProtectionToggle"):  # Check if role protection is enabled
         removed_roles = [role for role in before.roles if role not in after.roles]
         for role in removed_roles:
@@ -179,6 +188,7 @@ async def on_member_update(before, after):
 #  5. ʀᴏʟᴇ ᴜᴘᴅᴀᴛᴇ ᴡɪᴛʜ ᴅᴀɴɢᴇʀᴏᴜꜱ ᴘᴇʀᴍɪꜱꜱɪᴏɴꜱ
 @client.event
 async def on_guild_role_update(before: discord.Role, after: discord.Role):
+    settings = get_settings()
     if get_settings().get("permissionPreventerToggle"):  # Toggle check
         dangerous_perms = [
             "administrator",
@@ -233,35 +243,41 @@ async def on_guild_role_update(before: discord.Role, after: discord.Role):
 #  6.  ᴀɴᴛɪ-ɴᴜᴋᴇ ᴍᴏᴅᴜʟᴇ
 @client.event                                                                                          # Mass Deleting Channels
 async def on_guild_channel_delete(channel):
+    settings = get_settings()
     if get_settings().get("antiNukeToggle"):
         guild = channel.guild
         async for entry in guild.audit_logs(limit=3, action=discord.AuditLogAction.channel_delete):
             await check_rate_limit(guild, entry.user, "channel_delete")
 @client.event                                                                                          # Mass Creating Channels
 async def on_guild_channel_create(channel):
+    settings = get_settings()
     if get_settings().get("antiNukeToggle"):
         guild = channel.guild
         async for entry in guild.audit_logs(limit=3, action=discord.AuditLogAction.channel_create):
             await check_rate_limit(guild, entry.user, "channel_create")
 @client.event                                                                                          # Mass Banning Members
 async def on_member_ban(guild, user):
+    settings = get_settings()
     if get_settings().get("antiNukeToggle"):
         async for entry in guild.audit_logs(limit=7, action=discord.AuditLogAction.ban):
             await check_rate_limit(guild, entry.user, "ban")
 @client.event                                                                                          # Mass Kicking Members
 async def on_member_remove(member):
+    settings = get_settings()
     if get_settings().get("antiNukeToggle"):
         guild = member.guild
         async for entry in guild.audit_logs(limit=7, action=discord.AuditLogAction.kick):
             await check_rate_limit(guild, entry.user, "kick")
 @client.event                                                                                          # Mass Role Creation
 async def on_guild_role_create(role):
+    settings = get_settings()
     if get_settings().get("antiNukeToggle"):
         guild = role.guild
         async for entry in guild.audit_logs(limit=4, action=discord.AuditLogAction.role_create):
             await check_rate_limit(guild, entry.user, "role_create")
 @client.event                                                                                          # Mass Role Deletion
 async def on_guild_role_delete(role):
+    settings = get_settings()
     if get_settings().get("antiNukeToggle"):
         guild = role.guild
         async for entry in guild.audit_logs(limit=4, action=discord.AuditLogAction.role_delete):
