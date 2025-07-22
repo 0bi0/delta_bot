@@ -117,7 +117,7 @@
 
     <!-- Save Script -->
 <script>
-  const loadedSettings = {{ settings | tojson | safe }};
+  const loadedSettings = { settings , tojson , safe };
 
   window.onload = () => {
     for (const [id, val] of Object.entries(loadedSettings)) {
