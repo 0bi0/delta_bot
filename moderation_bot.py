@@ -42,8 +42,6 @@ def get_settings():
     with open(SETTINGS_FILE, "r") as f:
         return json.load(f)
 
-settings = load_settings()
-
 
 # Lists of protected roles and blocked words
 
@@ -295,6 +293,7 @@ join_tracker = defaultdict(list)
 
 @client.event
 async def on_member_join(member):
+    settings = get_settings()
     if not settings.get("antiRaidToggle"):
         return
     now = time.time()
