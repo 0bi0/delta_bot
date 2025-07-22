@@ -13,15 +13,14 @@ def index():
 def save_settings():
     try:
         new_settings = request.get_json()
-        print("[DEBUG] Incoming data:", new_settings)
-
+        print("[DEBUG] Received settings:", new_settings)
         with open("settings.json", "w") as f:
             json.dump(new_settings, f, indent=4)
-
         return jsonify({"success": True})
     except Exception as e:
-        print("[ERROR] Save failed:", e)
+        print("[ERROR]", e)
         return jsonify({"success": False, "error": str(e)}), 500
+
 
 if __name__ == "__main__":
     app.run(debug=True)
