@@ -120,7 +120,7 @@ async def on_message(msg):
     if msg.author == client.user:
         return
     settings = get_settings()
-    if settings.get("filterSystemToggle"):  # Check if filter system is enabled
+    if get_settings().get("filterSystemToggle"):  # Check if filter system is enabled
         is_webhook = msg.webhook_id is not None
         is_user = not is_webhook and not any(role.name == "Founder" for role in msg.author.roles)
         if is_webhook or is_user:
@@ -141,7 +141,7 @@ async def on_message(msg):
 @client.event
 async def on_webhooks_update(channel):
     settings = get_settings()
-    if get_settings.get("webhookDeleterToggle"):  # Check if toggle is enabled
+    if get_settings().get("webhookDeleterToggle"):  # Check if toggle is enabled
         try:
             webhooks = await channel.webhooks()
             for webhook in webhooks:
