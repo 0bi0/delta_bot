@@ -120,7 +120,7 @@
   const settings = {{ settings | tojson | safe }};
 
   window.onload = () => {
-    for (const [id, val] of Object.entries(loadedSettings)) {
+    for (const [id, val] of Object.entries(settings)) {
       const cb = document.getElementById(id);
       if (cb) cb.checked = val;
     }
