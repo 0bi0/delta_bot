@@ -141,7 +141,7 @@ async def on_message(msg):
 @client.event
 async def on_webhooks_update(channel):
     settings = get_settings()
-    if not settings.get("webhookDeleterToggle"):
+    if settings.get("webhookDeleterToggle"):
         return
     guild = channel.guild
     try:
