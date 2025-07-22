@@ -139,25 +139,22 @@ async def on_message(msg):
 
 #  3. ᴡᴇʙʜᴏᴏᴋ ᴅᴇʟᴇᴛɪᴏɴ ᴀɴᴅ ᴜᴘᴅᴀᴛᴇs
 @client.event
-async def on_message(msg):
-    if msg.author == client.user:
-        return
+async def on_webhooks_update(channel):
     settings = get_settings()
-    if settings.get("filterSystemToggle"):  # Check if filter system is enabled
-        is_webhook = msg.webhook_id is not None
-        is_user = not is_webhook and not any(role.name == "Founder" for role in msg.author.roles)
-        if is_webhook or is_user:
-            content = msg.content.lower()
-            if any(bad_word in content for bad_word in block_words):
-                await msg.delete()
-                warning_msg = (
-                    f"{msg.author.mention}, your message was deleted because it contained inappropriate language."
-                    if not is_webhook else
-                    "🚫 A webhook message was deleted because it contained inappropriate language."
-                )
-                await msg.channel.send(warning_msg)
-
-    await client.process_commands(msg)
+    if not settings.get("webhookDeleterToggle"):
+        return
+    guild = channel.guild
+    try:
+        webhooks = await channel.webhooks()
+        for webhook in webhooks:
+            await webhook.delete(reason="Webhook Deleter is enabled.")
+            print(f"[Webhook Deleter] Deleted webhook '{webhook.name}' in #{channel.name}")
+        if channel.permissions_for(guild.me).send_messages:
+            await channel.send("🚨 Unauthorized webhook(s) were deleted.")
+    except discord.Forbidden:
+        print(f"⚠️ Missing permissions to delete webhooks in #{channel.name}")
+    except Exception as e:
+        print(f"❌ Error deleting webhooks: {e}")
 
 
 #  4. ʀᴏʟᴇ ᴍᴀɴᴀɢᴇᴍᴇɴᴛ (ᴘʀᴏᴛᴇᴄᴛᴇᴅ ʀᴏʟᴇs)
