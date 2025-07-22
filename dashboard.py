@@ -3,24 +3,27 @@ import json
 
 app = Flask(__name__)
 
+SETTINGS_FILE = "settings.json"
+
+def get_settings():
+    with open(SETTINGS_FILE, "r") as f:
+        return json.load(f)
+
 @app.route("/")
-def index():
-    with open("settings.json", "r") as f:
-        settings = json.load(f)
-    print("[DEBUG] Sending to template:", settings)
-    return render_template("dashboard.html", settings=settings)
+def dashboard():
+    return render_template("dashboard.html", settings=get_settings())
+
 
 @app.route("/save", methods=["POST"])
 def save_settings():
     try:
-        new_settings = request.get_json()
-        print("[DEBUG] Received settings:", new_settings)
-        with open("settings.json", "w") as f:
-            json.dump(new_settings, f, indent=4)
-        return jsonify({"success": True})
+        settings = request.json
+        with open(SETTINGS_FILE, "w") as f:
+            json.dump(settings, f, indent=4)
+        return jsonify(success=True)
     except Exception as e:
-        print("[ERROR]", e)
-        return jsonify({"success": False, "error": str(e)}), 500
+        print(f"[ERROR] Failed to save settings: {e}")
+        return jsonify(success=False, error=str(e)), 500
 
 
 if __name__ == "__main__":
