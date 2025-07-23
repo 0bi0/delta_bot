@@ -19,6 +19,9 @@ from discord.ext import commands
 from discord import app_commands, Embed
 import datetime, time
 import json
+import importlib
+import atexit
+from discord.ext.commands import has_permissions
 
 
 # Bot token
@@ -40,7 +43,17 @@ def save_settings(settings):
 
 def get_settings():
     with open(SETTINGS_FILE, "r") as f:
-        return json.load(f)
+        data = json.load(f)
+        print("[DEBUG] Current settings loaded:", data)
+        return data
+
+
+current_settings = get_settings()
+
+
+# Reload settings to ensure the latest changes are applied
+
+importlib.invalidate_caches()
 
 
 # Lists of protected roles and blocked words
@@ -386,15 +399,15 @@ async def about_command(interaction: discord.Interaction):
 
 # If the bot disconnects, it will attempt to reconnect automatically
 
-@client.event
+
+@client.event 
 async def on_disconnect():
     try:
-        print("Bot disconnected. Attempting to reconnect...")
+        print("🔄 Attempting to reconnect...")
         await client.connect(reconnect=True)
-        if client.is_connected():
-            print("Bot reconnected successfully.")
     except Exception as e:
-        print(f"Failed to reconnect: {e}")
+        print(f"⚠️ Reconnection failed: {e}")
+        await asyncio.sleep(5)
 
 
 # Run the bot with the provided token
