@@ -50,6 +50,8 @@ def get_settings():
 
 current_settings = get_settings()
 
+lockdown_enabled = False
+
 
 # Reload settings to ensure the latest changes are applied
 
@@ -92,6 +94,9 @@ user_actions = defaultdict(list)
 # Anti-nuke function to check for rate limits on destructive actions (tracker for user actions)
 
 async def check_rate_limit(guild, user, action_type, threshold=3, seconds=5):
+    global lockdown_enabled
+    if lockdown_enabled:
+        threshold = 1  # Lockdown mode forces strict limit
     now = time.time()
     user_actions[(user.id, action_type)] = [
         t for t in user_actions[(user.id, action_type)] if now - t < seconds
@@ -362,6 +367,22 @@ async def timeout(interaction: discord.Interaction, user: discord.Member, time: 
             await interaction.response.send_message("❌ Invalid time format! Use `5m`, `2h`, `1d`, etc.", ephemeral=True)
     else:
         await interaction.response.send_message("❌ You don't have permission to timeout members.", ephemeral=True)
+#  8d. /ʟᴏᴄᴋᴅᴏᴡɴ ᴄᴏᴍᴍᴀɴᴅ
+@client.tree.command(name="lockdown", description="Enable or disable lockdown mode (Owner only)", guild=MY_GUILD)
+@app_commands.describe(mode="Choose 'enable' or 'disable'")
+async def lockdown(interaction: discord.Interaction, mode: str):
+    global lockdown_enabled
+    if interaction.user != interaction.guild.owner:
+        await interaction.response.send_message("❌ Only the server owner can use this command.", ephemeral=True)
+        return
+    if mode.lower() == "enable":
+        lockdown_enabled = True
+        await interaction.response.send_message("🔒 Lockdown mode enabled. Anti-nuke thresholds set to 1.", ephemeral=True)
+    elif mode.lower() == "disable":
+        lockdown_enabled = False
+        await interaction.response.send_message("🔓 Lockdown mode disabled. Anti-nuke thresholds restored.", ephemeral=True)
+    else:
+        await interaction.response.send_message("❌ Invalid option. Use `/lockdown enable` or `/lockdown disable`.", ephemeral=True)
 #  8d. /ʜᴇʟᴘ ᴄᴏᴍᴍᴀɴᴅ
 @client.tree.command(name="help", description="General assitance regarding this bot", guild=MY_GUILD)
 async def help_command(interaction: discord.Interaction):
@@ -371,6 +392,7 @@ async def help_command(interaction: discord.Interaction):
     embed.add_field(name="🔨 /ban  <user>  <time>  <reason>", value="Ban a member temporarily or permanently.", inline=False)
     embed.add_field(name="👟 /kick  <user>  <reason>", value="Kick a member from the server.", inline=False)
     embed.add_field(name="⏳ /timeout  <user>  <time>  <reason>", value="Timeout a user for a duration.", inline=False)
+    embed.add_field(name="🔒 /lockdown  <enable/disable>", value="Enable or disable lockdown mode.", inline=False)
     embed.add_field(name="=================================================" , value="ꜰᴇᴀᴛᴜʀᴇꜱ", inline=False)
     embed.add_field(name="🧹 Auto-Filter", value="Automatically filters slurs and harmful words.", inline=False)
     embed.add_field(name="🚫 Anti-Nuke", value="Prevents mass deletions, role changes, and other destructive actions.", inline=False)
