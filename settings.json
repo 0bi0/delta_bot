@@ -1,9 +1,11 @@
 {
-    "revengeOnBotRemoverToggle": true,
+    "antiNukeToggle": true,
+    "antiRaidToggle": true,
     "filterSystemToggle": true,
-    "webhookDeleterToggle": true,
+    "webhookDeleterToggle": false,
     "roleProtectionToggle": true,
     "permissionPreventerToggle": true,
-    "antiNukeToggle": true,
-    "antiRaidToggle": true
+    "revengeOnBotRemoverToggle": true,
+    "lockdownToggle": true
+
 }
