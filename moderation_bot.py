@@ -47,11 +47,6 @@ def get_settings():
         print("[DEBUG] Current settings loaded:", data)
         return data
 
-def is_lockdown():
-    return lockdown_enabled
-
-
-lockdown_enabled = False
 
 
 # Reload settings to ensure the latest changes are applied
