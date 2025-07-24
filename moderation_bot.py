@@ -412,6 +412,7 @@ async def help_command(interaction: discord.Interaction):
     embed.add_field(name="👟 /kick  <user>  <reason>", value="Kick a member from the server.", inline=False)
     embed.add_field(name="⏳ /timeout  <user>  <time>  <reason>", value="Timeout a user for a duration.", inline=False)
     embed.add_field(name="🔒 /lockdown  <enable/disable>", value="Enable or disable lockdown mode.", inline=False)
+    embed.add_field(name="📊 /status", value="Check the current status of lockdown mode.", inline=False)
     embed.add_field(name="=================================================" , value="ꜰᴇᴀᴛᴜʀᴇꜱ", inline=False)
     embed.add_field(name="🧹 Auto-Filter", value="Automatically filters slurs and harmful words.", inline=False)
     embed.add_field(name="🚫 Anti-Nuke", value="Prevents mass deletions, role changes, and other destructive actions.", inline=False)
