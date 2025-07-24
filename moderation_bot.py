@@ -380,7 +380,7 @@ async def timeout(interaction: discord.Interaction, user: discord.Member, time: 
     else:
         await interaction.response.send_message("❌ You don't have permission to timeout members.", ephemeral=True)
 #  8d. /ʟᴏᴄᴋᴅᴏᴡɴ ᴄᴏᴍᴍᴀɴᴅ
-@client.tree.command(name="lockdown")
+@client.tree.command(name="lockdown", description="Enable or disable lockdown mode", guild=MY_GUILD)
 async def lockdown(interaction: discord.Interaction, mode: str):
     settings = get_settings()
     if interaction.user != interaction.guild.owner:
