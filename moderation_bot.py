@@ -29,7 +29,7 @@ from discord.ext.commands import has_permissions
 token = "[REDACTED]"
 
 
-# Load settings from JSON file (settings.json)
+# Load settings from JSON file (settings.json) + Definitions
 
 SETTINGS_FILE = "settings.json"
 
@@ -47,6 +47,8 @@ def get_settings():
         print("[DEBUG] Current settings loaded:", data)
         return data
 
+def is_lockdown():
+    return lockdown_enabled
 
 current_settings = get_settings()
 
