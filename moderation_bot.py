@@ -396,7 +396,13 @@ async def lockdown(interaction: discord.Interaction, mode: str):
         await interaction.response.send_message("🔓 Lockdown mode disabled.", ephemeral=True)
     else:
         await interaction.response.send_message("❌ Invalid option. Use `/lockdown enable` or `/lockdown disable`.", ephemeral=True)
-#  8d. /ʜᴇʟᴘ ᴄᴏᴍᴍᴀɴᴅ
+#  8e. /sᴛᴀᴛᴜs ᴄᴏᴍᴍᴀɴᴅ
+@client.tree.command(name="status", description="Check lockdown mode status", guild=MY_GUILD)
+async def status(interaction: discord.Interaction):
+    settings = get_settings()
+    status = "ENABLED 🔒" if settings.get("lockdownToggle") else "DISABLED 🔓"
+    await interaction.response.send_message(f"Lockdown mode is currently: **{status}**", ephemeral=True)
+#  8f. /ʜᴇʟᴘ ᴄᴏᴍᴍᴀɴᴅ
 @client.tree.command(name="help", description="General assitance regarding this bot", guild=MY_GUILD)
 async def help_command(interaction: discord.Interaction):
     embed = Embed(title="📘 Delta Security Bot Help", color=0x00ffcc)
@@ -416,7 +422,7 @@ async def help_command(interaction: discord.Interaction):
     embed.add_field(name="==================================================", value="Delta Security Bot | Protecting your server.", inline=False)
     """embed.set_footer(text="Delta Security Bot | Protecting your server.")"""
     await interaction.response.send_message(embed=embed, ephemeral=True)
-# 8e. /ᴀʙᴏᴜᴛ ᴄᴏᴍᴍᴀɴᴅ
+# 8g. /ᴀʙᴏᴜᴛ ᴄᴏᴍᴍᴀɴᴅ
 @client.tree.command(name="about", description="Shows information about the bot")
 async def about_command(interaction: discord.Interaction):
     bot_user = client.user
