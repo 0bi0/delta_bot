@@ -96,7 +96,7 @@ user_actions = defaultdict(list)
 
 async def check_rate_limit(guild, user, action_type):
     settings = get_settings()
-    lockdown_enabled = settings.get("lockdownEnabled", False)
+    lockdown_enabled = settings.get("lockdownToggle", False)
     now = time.time()
     if lockdown_enabled:
         if not user.bot and user != guild.owner:
@@ -392,11 +392,11 @@ async def lockdown(interaction: discord.Interaction, mode: str):
         await interaction.response.send_message("❌ Only the server owner can use this command.", ephemeral=True)
         return
     if mode.lower() == "enable":
-        settings["lockdownEnabled"] = True
+        settings["lockdownToggle"] = True
         save_settings(settings)
         await interaction.response.send_message("🔒 Lockdown mode enabled.", ephemeral=True)
     elif mode.lower() == "disable":
-        settings["lockdownEnabled"] = False
+        settings["lockdownToggle"] = False
         save_settings(settings)
         await interaction.response.send_message("🔓 Lockdown mode disabled.", ephemeral=True)
     else:
