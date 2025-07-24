@@ -95,15 +95,28 @@ user_actions = defaultdict(list)
 
 # Anti-nuke function to check for rate limits on destructive actions (tracker for user actions)
 
-async def check_rate_limit(guild, user, action_type, threshold=3, seconds=5):
+async def check_rate_limit(guild, user, action_type):
     global lockdown_enabled
-    if lockdown_enabled:
-        threshold = 1  # Lockdown mode forces strict limit
     now = time.time()
+    if lockdown_enabled:
+        if not user.bot and user != guild.owner:
+            print(f"[LOCKDOWN] {user} triggered lockdown punishment for {action_type}")
+            await punish_nuker(guild, user, reason=f"Lockdown violation: {action_type}")
+        return
+    thresholds = {
+        "channel_delete": 3,
+        "channel_create": 3,
+        "ban": 5,
+        "kick": 5,
+        "role_create": 3,
+        "role_delete": 3
+    }
+    threshold = thresholds.get(action_type, 3)
     user_actions[(user.id, action_type)] = [
-        t for t in user_actions[(user.id, action_type)] if now - t < seconds
+        t for t in user_actions[(user.id, action_type)] if now - t < 5
     ]
     user_actions[(user.id, action_type)].append(now)
+
     if len(user_actions[(user.id, action_type)]) >= threshold:
         if not user.bot and user != guild.owner:
             await punish_nuker(guild, user, reason=f"Mass {action_type}")
