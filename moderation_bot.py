@@ -388,10 +388,12 @@ async def lockdown(interaction: discord.Interaction, mode: str):
     if mode.lower() == "enable":
         settings["lockdownToggle"] = True
         save_settings(settings)
+        settings = get_settings()  # 👈 force refresh
         await interaction.response.send_message("🔒 Lockdown mode enabled.", ephemeral=True)
     elif mode.lower() == "disable":
         settings["lockdownToggle"] = False
         save_settings(settings)
+        settings = get_settings()  # 👈 force refresh
         await interaction.response.send_message("🔓 Lockdown mode disabled.", ephemeral=True)
     else:
         await interaction.response.send_message("❌ Invalid option. Use `/lockdown enable` or `/lockdown disable`.", ephemeral=True)
