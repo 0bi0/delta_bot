@@ -2,10 +2,10 @@
     "antiNukeToggle": true,
     "antiRaidToggle": true,
     "filterSystemToggle": true,
-    "webhookDeleterToggle": false,
+    "webhookDeleterToggle": true,
     "roleProtectionToggle": true,
     "permissionPreventerToggle": true,
     "revengeOnBotRemoverToggle": true,
-    "lockdownToggle": true
+    "lockdownEnabled": true
 
 }
