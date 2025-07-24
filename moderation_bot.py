@@ -50,7 +50,6 @@ def get_settings():
 def is_lockdown():
     return lockdown_enabled
 
-current_settings = get_settings()
 
 lockdown_enabled = False
 
@@ -96,7 +95,8 @@ user_actions = defaultdict(list)
 # Anti-nuke function to check for rate limits on destructive actions (tracker for user actions)
 
 async def check_rate_limit(guild, user, action_type):
-    global lockdown_enabled
+    settings = get_settings()
+    lockdown_enabled = settings.get("lockdownEnabled", False)
     now = time.time()
     if lockdown_enabled:
         if not user.bot and user != guild.owner:
@@ -116,7 +116,6 @@ async def check_rate_limit(guild, user, action_type):
         t for t in user_actions[(user.id, action_type)] if now - t < 5
     ]
     user_actions[(user.id, action_type)].append(now)
-
     if len(user_actions[(user.id, action_type)]) >= threshold:
         if not user.bot and user != guild.owner:
             await punish_nuker(guild, user, reason=f"Mass {action_type}")
@@ -386,19 +385,20 @@ async def timeout(interaction: discord.Interaction, user: discord.Member, time: 
     else:
         await interaction.response.send_message("❌ You don't have permission to timeout members.", ephemeral=True)
 #  8d. /ʟᴏᴄᴋᴅᴏᴡɴ ᴄᴏᴍᴍᴀɴᴅ
-@client.tree.command(name="lockdown", description="Enable or disable lockdown mode (Owner only)", guild=MY_GUILD)
-@app_commands.describe(mode="Choose 'enable' or 'disable'")
+@client.tree.command(name="lockdown")
 async def lockdown(interaction: discord.Interaction, mode: str):
-    global lockdown_enabled
+    settings = get_settings()
     if interaction.user != interaction.guild.owner:
         await interaction.response.send_message("❌ Only the server owner can use this command.", ephemeral=True)
         return
     if mode.lower() == "enable":
-        lockdown_enabled = True
-        await interaction.response.send_message("🔒 Lockdown mode enabled. Anti-nuke thresholds set to 1.", ephemeral=True)
+        settings["lockdownEnabled"] = True
+        save_settings(settings)
+        await interaction.response.send_message("🔒 Lockdown mode enabled.", ephemeral=True)
     elif mode.lower() == "disable":
-        lockdown_enabled = False
-        await interaction.response.send_message("🔓 Lockdown mode disabled. Anti-nuke thresholds restored.", ephemeral=True)
+        settings["lockdownEnabled"] = False
+        save_settings(settings)
+        await interaction.response.send_message("🔓 Lockdown mode disabled.", ephemeral=True)
     else:
         await interaction.response.send_message("❌ Invalid option. Use `/lockdown enable` or `/lockdown disable`.", ephemeral=True)
 #  8d. /ʜᴇʟᴘ ᴄᴏᴍᴍᴀɴᴅ
