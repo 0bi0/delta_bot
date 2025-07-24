@@ -302,7 +302,10 @@ async def punish_nuker(guild, user, reason="Nuking behavior"):
         if not quarantine:
             quarantine = await guild.create_role(name="Quarantine", permissions=discord.Permissions.none())
         await user.edit(roles=[quarantine], reason=reason)
-        await guild.system_channel.send(f"🚨 {user.mention} was quarantined: {reason}")
+        if guild.system_channel:
+            await guild.system_channel.send(f"🚨 {user.mention} was quarantined: {reason}")
+        else:
+            print(f"🚨 {user.mention} was quarantined: {reason} (No system channel set)")
     except discord.Forbidden:
         print(f"Could not punish {user}. Missing permissions.")
 
