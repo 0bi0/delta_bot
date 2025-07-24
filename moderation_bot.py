@@ -42,16 +42,15 @@ def save_settings(settings):
         json.dump(settings, f, indent=4)
 
 def get_settings():
-    with open(SETTINGS_FILE, "r") as f:
-        data = json.load(f)
-        print("[DEBUG] Current settings loaded:", data)
-        return data
+    try:
+        with open(SETTINGS_FILE, "r") as f:
+            data = json.load(f)
+            print("[DEBUG] Current settings loaded:", data)
+            return data
+    except Exception as e:
+        print(f"[ERROR] Failed to load settings: {e}")
+        return {}
 
-
-
-# Reload settings to ensure the latest changes are applied
-
-importlib.invalidate_caches()
 
 
 # Lists of protected roles and blocked words
