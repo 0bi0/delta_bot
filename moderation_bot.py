@@ -78,7 +78,7 @@ client = commands.Bot(command_prefix="!", intents=discord.Intents.all(), applica
 
 # Define the guild ID for the bot to operate in
 
-GUILD_ID = 1394304937789493389
+GUILD_ID = [REDACTED]
 MY_GUILD = discord.Object(id=GUILD_ID)
 
 
